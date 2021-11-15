@@ -1,0 +1,170 @@
+#include <iostream>
+using namespace std;
+#include <climits>
+/*
+
+All the functions are tested to work ok, except there is a concern on Heap Insert function.
+It works, but modifications need to be done for the dynamic memory allocation to the array
+*/
+
+template <class Data>
+void MaxHeapify(Data A[], int i, int N)
+{
+  int L, R, largest;
+  L = 2*i + 1;
+  R = L + 1;
+  if(L<=N-1 && A[L] > A[i])
+  
+    largest = L;
+  
+  else largest = i;
+  if(R<=N-1 && A[R] > A[largest])
+  
+    largest = R;
+  
+  if(largest != i)
+  {
+    swap(A[i], A[largest]);
+    MaxHeapify(A, largest, N);
+  }
+
+}
+
+template<class Data>
+void BuildMaxHeap(Data A[], int N)
+{
+ int i;
+ for (i = N/2 -1; i >= 0; i--)
+   MaxHeapify(A, i, N);
+}
+
+template<class Data>
+void HeapSort(Data A[], int N)
+{
+  int i;
+  for(i = N-1; i >= 1; i--)
+  {
+    swap(A[0], A[i]);
+    MaxHeapify(A, 0, i);
+  }
+}
+int Parent(int i)
+{
+  return (i-1)/2;
+}
+
+template<class Data>
+void Heap_Increase_Key(Data A[], int i, Data key)
+{
+  if(key <= A[i])
+  {
+    cout << "New key cannot be less than the existing value" << endl;
+    return;
+  }
+  A[i] = key;
+
+  while (i > 0 && A[Parent(i)] < A[i])
+  {
+    swap(A[i], A[Parent(i)]);
+    i = Parent(i);
+
+  }
+}
+
+template <class Data>
+
+void HeapInsert(Data A[], Data key, int &N)
+{
+  N++;
+  A[N] = INT_MIN;
+  Heap_Increase_Key(A, N, key);
+
+}
+template <class Data>
+void HeapDelete(Data A[], int i, int &N)
+{
+  swap(A[i], A[N]);
+  N--;
+  MaxHeapify(A, i, N);
+
+
+}
+
+template <class Data>
+Data Heap_Extract_Max(Data A[], int & N)
+{
+  if(N < 1)
+  {
+    cout << "Empty data structure, add some data first"<< endl;
+    exit(1);
+  }
+  Data max;
+  max = A[0];
+  swap(A[0], A[N]);
+  N--;
+  MaxHeapify(A, 0, N);
+  return max;
+}
+int main()
+ {
+ int N;
+ int * A, * B;
+ cout << "Enter number of data: ";
+ cin >> N;
+ A = new int [N];
+ B = new int [N];
+ int i;
+ cout << "Enter " << N << "number of data " << endl;
+ for(i = 0; i <= N-1; i++)
+    cin >> A[i];
+ // Call BuildMaxHeap function
+ BuildMaxHeap(A, N);
+ cout << "The Max Heap is " << endl;
+ for(i = 0; i <= N-1; i++)
+   cout << A[i] << ", ";
+ cout << endl;
+for (i = 0; i <= N-1; i++)
+{
+  B[i] = A[i];
+}
+HeapSort(B, N);
+cout << "Sorted Data is " << endl;
+ for(i = 0; i <= N-1; i++)
+   cout << B[i] << ", ";
+ cout << endl;
+
+ int newkey;
+ int newkeypos; 
+ cout << "Enter the pos no and the new key value ";
+ cin >> newkeypos >> newkey;
+ Heap_Increase_Key(A, newkeypos, newkey);
+ cout << "The new maxheap is " << endl;
+ for(i = 0; i <= N-1; i++)
+   cout << A[i] << ", ";
+ cout << endl;
+ cout << "Enter a data to insert: ";
+ cin >> newkey;
+ HeapInsert(A, newkey, N);
+ cout << "Number of data = " << N << endl;
+  cout << "The new maxheap is " << endl;
+ for(i = 0; i <= N-1; i++)
+   cout << A[i] << ", ";
+ cout << endl;
+
+ // to delete a data
+ int nodeToDelete;
+ cout << "Enter the node you want to delete: ";
+ cin >> nodeToDelete;
+ HeapDelete(A, nodeToDelete, N);
+ cout << "Number of data = " << N << endl;
+  cout << "The new maxheap is " << endl;
+ for(i = 0; i <= N-1; i++)
+   cout << A[i] << ", ";
+ cout << endl;
+
+int maxvalue = Heap_Extract_Max(A, N);
+ cout << "N = " << N << "max value =  " << maxvalue << endl;
+ 
+ return 0;
+
+}
