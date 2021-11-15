@@ -1,0 +1,95 @@
+#include <iostream>
+using namespace std;
+#include <fstream>
+#include <ostream>
+typedef int arrayType;
+/*5.	Write a program that can be used to implement QuickSort Algorithm. 
+The function prototype for QuickSort and Partition algorithm are as given below:
+template <class DataType>
+void QuickSort(DataType  A[ ], int N);
+
+template <class DataType>
+int Partition (DataType A[ ], int p,  int r);   // p is the start and r is the end index
+
+You need to properly define these two functions along with the main and other statements such as header files. 
+The main function should define the array A dynamically by providing number of data stored (N) and getting their inputs from a data file unsorted.txt
+Then main should call the QuickSort function and display the sorted array.
+*/
+#include <iostream>
+using namespace std;
+typedef int arrayType;        //change int for type of data
+//dvide and conquer and recursive calls itself
+//function defintion
+template <class DataType>
+int partition(arrayType A[],int p, int r); 
+void Quicksort(arrayType A[],int p, int r);
+
+
+int main() 
+{
+  int n;
+ifstream input;
+
+input.open("unsorted.txt");
+
+ 
+ cout << "Enter numbe of data";
+ cin >> n;
+
+ arrayType * A;
+ A = new arrayType[n];
+
+ int i;     
+
+ for (i = 0; i <= n - 1; i++)
+ input >>  A[i];
+ofstream output;
+output.open("sorted.txt");
+ Quicksort(A, 0, n-1);  //call quick sort 0= first n-1= last
+ cout << "sorted data is" << endl; 
+ output<<"Sorted Data";
+ for (i = 0; i <= n - 1; i++)
+ cout <<  A[i] << " ," ;
+ cout << endl;
+output <<  A[i] << " ," ;
+}
+
+//second partition algorithm
+//*PARTITION(A, p, r)
+    	//	pivot = A[r]
+      //i = p - 1 
+// for j = p to r -1
+// if A[j] <= pivot
+//  i=i + 1
+//      swap A[i + 1] with A[j]
+//swap A[i + 1] with A[r]
+//return i+1
+	
+int partition(arrayType A[],int p, int r) 
+{
+arrayType pivot;
+pivot = A[r];
+int i , j;
+i = p-1;
+for (j = p; j <= r-1; j++ )
+{
+if(A[j] <= pivot)
+{
+  i = i + 1;
+  swap(A[i], A[j]);
+}
+} // end of the loop
+swap (A[i  + 1], A[r] );
+return i + 1;
+}
+
+void Quicksort(arrayType A[],int p, int r) 
+{
+  if(p < r)
+  {
+    int q = partition(A, p, r);
+    Quicksort(A, p, q-1);
+    Quicksort(A, q+1, r );
+  }
+}
+
