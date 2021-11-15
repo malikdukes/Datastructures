@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+typedef int arrayType;        //change int for type of data
+//dvide and conquer and recursive calls itself
+//function defintion
+int partition(arrayType A[],int p, int r);            //A,P firt ,R last
+void Quicksort(arrayType A[],int p, int r);
+
+
+int main() 
+{
+ int n; //n = number off data 
+ cout << "Enter numbe of data";
+ cin >> n;
+
+ arrayType * A;
+ A = new arrayType[n];
+
+ int i;     
+ cout << "Enter "<< n << "number of unorted data" << endl;
+// loop fo unsorted data
+ for (i = 0; i <= n - 1; i++)
+ cin >>  A[i];
+
+ Quicksort(A, 0, n-1);  //call quick sort 0= first n-1= last
+ cout << "sorted data is" << endl;   // loop for sorted data
+ for (i = 0; i <= n - 1; i++)
+ cout <<  A[i] << " ," ;
+ cout << endl;
+
+}
+//second partition algorithm
+//*PARTITION(A, p, r)
+    	//	pivot = A[r]
+      //i = p - 1 
+// for j = p to r -1
+// if A[j] <= pivot
+//  i=i + 1
+//      swap A[i + 1] with A[j]
+//swap A[i + 1] with A[r]
+//return i+1
+	
+int partition(arrayType A[],int p, int r) 
+{
+arrayType pivot;
+pivot = A[r];
+int i , j;
+i = p-1;
+for (j = p; j <= r-1; j++ )
+{
+if(A[j] <= pivot)
+{
+  i = i + 1;
+  swap(A[i], A[j]);
+}
+} // end of the loop
+swap (A[i  + 1], A[r] );
+return i + 1;
+}
+
+void Quicksort(arrayType A[],int p, int r) 
+{
+  if(p < r)
+  {
+    int q = partition(A, p, r);
+    Quicksort(A, p, q-1);
+    Quicksort(A, q+1, r );
+  }
+}
